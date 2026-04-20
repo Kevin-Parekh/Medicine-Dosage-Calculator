@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Medicine Dosage Calculator
 
-# Run and deploy your AI Studio app
+A professional-grade, weight-based pediatric medicine dosage calculator designed for quick decision support.
 
-This contains everything you need to run your app locally.
+## Features
+- **Weight-Based Calculations**: Automatically applies standard clinical formulas (e.g., 15mg/kg for Paracetamol).
+- **Clinical Presets**: Accurate defaults for Paracetamol, Ibuprofen, and Amoxicillin.
+- **Smart Age-Aware Logic**: Switches between infant (24mg/ml) and children's (50mg/ml) formulations based on the patient's age.
+- **Visual Dosing Guide**: Includes a dynamic beaker visualization for liquid medicines and fractional pill diagrams for tablets.
+- **Mixed Fraction Tablet Support**: Rounds to standard half and quarter pill portions (e.g., 1(1/2) Tablets).
+- **Transparency**: Shows the exact formula and calculation trace used for each result.
 
-View your app in AI Studio: https://ai.studio/apps/db239afb-7e63-4f09-a228-4b5083ddf65a
+## How to Deploy to GitHub Pages
 
-## Run Locally
+1. **Option A: Automated (GitHub Actions)**
+   - Push this repository to GitHub.
+   - Go to **Settings > Pages**.
+   - Under **Build and deployment**, set **Source** to "GitHub Actions".
+   - GitHub will automatically use the `npm run build` command to deploy the `dist` folder.
 
-**Prerequisites:**  Node.js
+2. **Option B: Manual Build**
+   - Run `npm install`
+   - Run `npm run build`
+   - Push the contents of the `dist` folder to your `gh-pages` branch.
 
+## Safety Note
+*Calculations are based on standard clinical guidelines (WHO/NICE). Always verify results with a qualified healthcare professional and check the specific concentration on your medicine's bottle.*
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+Created by Krishna Parekh.
