@@ -1,0 +1,6 @@
+{
+  "name": "Krishna Parekh Medicine Dosage Calculator",
+  "description": "A precision medicine dosage calculator for pediatric and general use, calculating exact doses based on weight, age, and medicine strength with built-in safety checks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

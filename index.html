@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Dosage Calculator | Krishna Parekh</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="header">
+            <div>
+                <h1>Krishna Parekh Medicine Dosage Calculator</h1>
+                <p class="subtitle">Clinical Decision Support Tool</p>
+            </div>
+            <div class="header-right">
+                <div class="session-badge">Session Active</div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="input-section">
+                <form id="dosage-form" class="input-grid">
+                    <div class="form-group">
+                        <label for="age" class="label">Patient Age (Years)</label>
+                        <input type="number" id="age" class="input-field" placeholder="e.g. 10" min="0" step="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight" class="label">Patient Weight (kg)</label>
+                        <input type="number" id="weight" class="input-field" placeholder="e.g. 30" min="0" step="0.1">
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="medicine" class="label">Medicine Selection</label>
+                        <input type="text" id="medicine" class="input-field" list="medicine-list" placeholder="Select or type medicine...">
+                        <datalist id="medicine-list">
+                            <option value="Paracetamol">Paracetamol (15mg/kg)</option>
+                            <option value="Ibuprofen">Ibuprofen (10mg/kg)</option>
+                            <option value="Amoxicillin">Amoxicillin (20mg/kg)</option>
+                        </datalist>
+                    </div>
+
+                    <div id="custom-dose-group" class="form-group form-group-full" style="display: none;">
+                        <label for="custom-dose-kg" class="label text-blue-600">Standard Dose (mg per kg)</label>
+                        <input type="number" id="custom-dose-kg" class="input-field border-blue-200" placeholder="e.g. 15" min="0" step="0.1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dosage-type" class="label">Dosage Type</label>
+                        <input type="text" id="dosage-type" class="input-field" list="type-list" placeholder="e.g. Liquid, Tablet...">
+                        <datalist id="type-list">
+                            <option value="Liquid">Liquid</option>
+                            <option value="Tablet">Tablet</option>
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="strength" class="label" id="strength-label">Strength (Optional)</label>
+                        <input type="number" id="strength" class="input-field" placeholder="e.g. 50" min="0.1" step="0.1">
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="frequency" class="label">Frequency (Doses per Day)</label>
+                        <input type="number" id="frequency" class="input-field" placeholder="e.g. 3" min="1" step="1">
+                    </div>
+
+                    <div class="form-group-full disclaimer">
+                        <p>* Calculations are based on standard clinical guidelines. Always verify with a healthcare professional before administration.</p>
+                    </div>
+                </form>
+            </section>
+
+            <section class="results-section">
+                <div class="badge">Calculated Results</div>
+                
+                <div class="result-card">
+                    <div class="result-label">Intake Dose</div>
+                    <div class="result-value">
+                        <span id="dosage-value">--</span>
+                        <span id="dosage-unit" class="unit-text"></span>
+                    </div>
+                    <div id="tsp-container" class="mt-2 text-sm font-semibold text-blue-800" style="display: none;">
+                        ≈ <span id="tsp-value">--</span> Teaspoons
+                    </div>
+                </div>
+
+                <div id="visual-dosage-container" class="result-card visual-guide">
+                    <div class="result-label">Visual Guide (Per Dose)</div>
+                    <div id="visual-icons" class="visual-icons">
+                        <!-- Icons will be injected here -->
+                    </div>
+                    <p class="guide-text mt-2 text-xs text-slate-500">Visual representation of quantity to be given at once.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="result-card">
+                        <div class="result-label">Dose per Intake</div>
+                        <div class="result-value compact">
+                            <span id="intake-mg">--</span>
+                        </div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Daily Frequency</div>
+                        <div class="result-value compact">
+                            <span id="freq-display">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">Total Daily Dose</div>
+                    <div class="result-value secondary">
+                        <span id="daily-mg">--</span>
+                    </div>
+                </div>
+
+                <div id="warning-box" class="warning-box text-sm">⚠️ Warning: Maximum daily dose exceeded!</div>
+
+                <div class="action-footer">
+                    <button onclick="triggerPrint()" class="report-btn">Generate Report</button>
+                </div>
+            </section>
+        </main>
+
+        <section class="chart-section result-card mt-4">
+            <div class="badge">Dosage Trends</div>
+            <div class="result-label mb-4">Estimated Dosage vs Age (based on average weight)</div>
+            <div id="dosage-chart" class="chart-container"></div>
+            <div class="chart-legend">
+                <div class="legend-item"><span class="legend-color liquid"></span> Liquid (Daily mg)</div>
+                <div class="legend-item"><span class="legend-color tablet"></span> Tablet (Daily mg)</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Report Template (Hidden) -->
+    <div id="report-print-area" class="report-print-only">
+        <div class="report-header">
+            <h2>Medical Dosage Report</h2>
+            <p>Patient Name: ____________________ Date: <span id="report-date"></span></p>
+        </div>
+        <div class="report-content" id="report-summary">
+            <!-- Will be populated by JS -->
+        </div>
+        <div class="report-footer">
+            <p>Calculated by Krishna Parekh Medicine Dosage Calculator</p>
+            <p class="warning">* Consult a medical professional before administration.</p>
+        </div>
+    </div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="/script.js"></script>
+    <script>
+        // Adjust UI elements based on dosage type selection
+        document.getElementById('dosage-type').addEventListener('change', function(e) {
+            let label = 'Strength';
+            if (e.target.value === 'Liquid') label = 'Strength (mg/ml)';
+            else if (e.target.value === 'Tablet') label = 'Strength (mg per tablet)';
+            
+            document.getElementById('strength-label').textContent = label;
+        });
+
+        // Bridge to module function if needed, or just let module handle it
+        function triggerPrint() {
+            window.dispatchEvent(new CustomEvent('generate-report'));
+            setTimeout(() => window.print(), 300);
+        }
+    </script>
+</body>
+</html>
+
