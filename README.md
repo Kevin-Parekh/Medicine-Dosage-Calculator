@@ -27,4 +27,4 @@ A professional-grade, weight-based pediatric medicine dosage calculator designed
 *Calculations are based on standard clinical guidelines (WHO/NICE). Always verify results with a qualified healthcare professional and check the specific concentration on your medicine's bottle.*
 
 ---
-Created by Krishna Parekh.
+Created by Krishna Kevin Parekh.
